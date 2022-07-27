@@ -2,10 +2,11 @@ package com.oscarhanke.customer.service;
 
 import com.oscarhanke.customer.model.Customer;
 import com.oscarhanke.customer.model.CustomerRegistrationRequest;
+import com.oscarhanke.customer.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomerService {
+public record CustomerService(CustomerRepository customerRepository) {
     public void registerCustomer(CustomerRegistrationRequest request) {
         Customer customer = Customer.builder()
                 .firstName(request.firstName())
@@ -15,6 +16,6 @@ public class CustomerService {
 
         //TODO: check if email is valid
         //TODO: check if email is not taken
-        //TODO: store customer in db
+        customerRepository.save(customer);
     }
 }
