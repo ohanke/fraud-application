@@ -6,7 +6,8 @@
 
 	<modules>
 		<module>customer</module>
-	</modules>
+        <module>fraud</module>
+    </modules>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
