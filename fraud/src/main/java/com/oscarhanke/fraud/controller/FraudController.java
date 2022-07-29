@@ -1,6 +1,6 @@
 package com.oscarhanke.fraud.controller;
 
-import com.oscarhanke.fraud.model.FraudCheckResponse;
+import com.oscarhanke.clients.fraud.FraudCheckResponse;
 import com.oscarhanke.fraud.service.FraudCheckService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
