@@ -2,6 +2,8 @@ package com.oscarhanke.customer.service;
 
 import com.oscarhanke.clients.fraud.FraudCheckResponse;
 import com.oscarhanke.clients.fraud.FraudClient;
+import com.oscarhanke.clients.notification.NotificationClient;
+import com.oscarhanke.clients.notification.NotificationRequest;
 import com.oscarhanke.customer.model.Customer;
 import com.oscarhanke.customer.model.CustomerRegistrationRequest;
 import com.oscarhanke.customer.repository.CustomerRepository;
@@ -9,7 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public record CustomerService(CustomerRepository customerRepository, RestTemplate restTemplate, FraudClient fraudClient) {
+public record CustomerService(
+        CustomerRepository customerRepository,
+        FraudClient fraudClient,
+        NotificationClient notificationClient) {
+
     public void registerCustomer(CustomerRegistrationRequest request) {
         Customer customer = Customer.builder()
                 .firstName(request.firstName())
@@ -27,6 +33,14 @@ public record CustomerService(CustomerRepository customerRepository, RestTemplat
             throw new IllegalStateException("Fraudster");
         }
 
-        //todo: send notification
+        //todo: make it async
+        notificationClient.sendNotification(
+                new NotificationRequest(
+                        customer.getId(),
+                        customer.getEmail(),
+                        String.format("Hi %s...",
+                                customer.getFirstName())
+                )
+        );
     }
 }
